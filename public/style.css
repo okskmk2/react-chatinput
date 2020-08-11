@@ -1,0 +1,11 @@
+.row {
+  display: flex;
+}
+
+.ai-end {
+  align-items: flex-end;
+}
+
+.rest {
+  flex-grow: 1;
+}
