@@ -9,3 +9,11 @@
 .rest {
   flex-grow: 1;
 }
+
+/* meaningful classnames */
+
+.chatinput-container {
+  border: 1px solid #ddd;
+  margin: 6px;
+  padding: 10px 16px;
+}

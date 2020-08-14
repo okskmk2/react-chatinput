@@ -1,20 +1,39 @@
-import React, { Fragment } from "react";
-import { useState } from "react";
+import React, { Fragment, createRef } from "react";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
+import Editor from "./Editor";
 
 const Translator = (props) => {
-  const { editorContent, isOpenTranslator, setIsOpenTranslator } = props;
-  const [translatedInput, setTranslatedInput] = useState("");
+  const { editorContent, isOpenTranslator } = props;
+  const editorRef = createRef();
 
   useEffect(() => {
-    setTranslatedInput(() =>
-      editorContent.split("").reverse().join("").split(" ").reverse().join(" ")
-    );
+    if (editorRef.current) {
+      editorRef.current.innerHTML = editorContent
+        .split("")
+        .reverse()
+        .join("")
+        .split(" ")
+        .reverse()
+        .join(" ");
+    }
+    // eslint-disable-next-line
   }, [editorContent]);
 
   return (
-    <Fragment>{isOpenTranslator && <div>{translatedInput}</div>}</Fragment>
+    <Fragment>
+      {isOpenTranslator && (
+        <div className="row">
+          <div className="rest">
+            <Editor ref={editorRef} />
+          </div>
+          <select>
+            <option>ko</option>
+            <option>en</option>
+          </select>
+        </div>
+      )}
+    </Fragment>
   );
 };
 Translator.propTypes = {

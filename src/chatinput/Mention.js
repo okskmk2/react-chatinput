@@ -30,6 +30,7 @@ const Mention = (props) => {
     } else {
       setSuggestions(() => []);
     }
+    // eslint-disable-next-line
   }, [editorContent]);
   return (
     <Fragment>
