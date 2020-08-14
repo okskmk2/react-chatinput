@@ -2,14 +2,11 @@ import React, { Fragment, useReducer } from "react";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import Editor from "./editor";
-import editorReducer from "./editor/reducer";
+import editorReducer, { editorInitialState } from "./editor/reducer";
 
 const Translator = (props) => {
   const { editorContent, isOpenTranslator } = props;
-  const [editorState, dispatchEditorState] = useReducer(editorReducer, {
-    content: "",
-    updateChanger: false,
-  });
+  const [editorState, dispatchEditorState] = useReducer(editorReducer, editorInitialState);
 
   useEffect(() => {
     dispatchEditorState({

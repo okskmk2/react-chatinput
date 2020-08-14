@@ -13,4 +13,9 @@ const editorReducer = (state, action) => {
   }
 };
 
+export const editorInitialState = {
+  content: "",
+  updateChanger: false,
+};
+
 export default editorReducer;

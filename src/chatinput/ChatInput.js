@@ -3,14 +3,13 @@ import Editor from "./editor";
 import Mention from "./Mention";
 import AppDir from "./AppDir";
 import Translator from "./Translator";
-import editorReducer from './editor/reducer';
-
+import editorReducer, { editorInitialState } from "./editor/reducer";
 
 const ChatInput = () => {
-  const [editorState, dispatchEditorState] = useReducer(editorReducer, {
-    content: "",
-    updateChanger: false,
-  });
+  const [editorState, dispatchEditorState] = useReducer(
+    editorReducer,
+    editorInitialState
+  );
   const [isOpenTranslator, setIsOpenTranslator] = useState(false);
   const [isOpenAppdir, setIsOpenAppdir] = useState(false);
   return (
