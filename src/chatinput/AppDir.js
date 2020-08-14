@@ -1,11 +1,9 @@
 import React, { Fragment } from "react";
 import { useEffect } from "react";
-import { useState } from "react";
 import PropTypes from "prop-types";
 
 const AppDir = (props) => {
-  const { editorContent } = props;
-  const [isOpenAppdir, setIsOpenAppdir] = useState(false);
+  const { editorContent, isOpenAppdir, setIsOpenAppdir } = props;
   useEffect(() => {
     if (editorContent.endsWith("/")) {
       setIsOpenAppdir(true);

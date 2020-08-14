@@ -1,27 +1,52 @@
-import React, { useState, createRef } from "react";
-import Editor from "./Editor";
+import React, { useState, useReducer } from "react";
+import Editor from "./editor";
 import Mention from "./Mention";
 import AppDir from "./AppDir";
 import Translator from "./Translator";
+import editorReducer from './editor/reducer';
+
 
 const ChatInput = () => {
-  const editorRef = createRef();
-  const [editorContent, setEditorContent] = useState("");
+  const [editorState, dispatchEditorState] = useReducer(editorReducer, {
+    content: "",
+    updateChanger: false,
+  });
   const [isOpenTranslator, setIsOpenTranslator] = useState(false);
+  const [isOpenAppdir, setIsOpenAppdir] = useState(false);
   return (
     <div className="chatinput-container">
-      <Mention editorContent={editorContent} />
+      <Mention editorContent={editorState.content} />
       <div className="row ai-end">
         <div>
           <button>upload</button>
-          <button>appdir</button>
+          <button
+            onClick={() => {
+              if (isOpenAppdir) {
+                dispatchEditorState({
+                  type: "UPDATE",
+                  payload: { content: "" },
+                });
+              } else {
+                dispatchEditorState({
+                  type: "UPDATE",
+                  payload: { content: "/" },
+                });
+              }
+            }}
+          >
+            appdir
+          </button>
         </div>
         <div className="rest">
-          <AppDir editorContent={editorContent} />
-          <div className='row'>
+          <AppDir
+            editorContent={editorState.content}
+            isOpenAppdir={isOpenAppdir}
+            setIsOpenAppdir={setIsOpenAppdir}
+          />
+          <div className="row">
             <Editor
-              setEditorContent={setEditorContent}
-              ref={editorRef}
+              editorState={editorState}
+              dispatchEditorState={dispatchEditorState}
               className="rest"
             />
             {isOpenTranslator && (
@@ -32,7 +57,7 @@ const ChatInput = () => {
             )}
           </div>
           <Translator
-            editorContent={editorContent}
+            editorContent={editorState.content}
             setIsOpenTranslator={setIsOpenTranslator}
             isOpenTranslator={isOpenTranslator}
           />
@@ -48,7 +73,10 @@ const ChatInput = () => {
           </button>
           <button
             onClick={() => {
-              editorRef.current.innerHTML = "";
+              dispatchEditorState({
+                type: "UPDATE",
+                payload: { content: "" },
+              });
             }}
           >
             clear
