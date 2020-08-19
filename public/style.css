@@ -17,3 +17,8 @@
   margin: 6px;
   padding: 10px 16px;
 }
+
+.mention-label {
+  color: blue;
+  font-weight: bold;
+}
