@@ -5,21 +5,38 @@ const Editor = (props) => {
   const editorRef = useRef();
 
   const onChange = (e) => {
-    e.persist();
+    // e.persist();
     let key = "";
     if (e.type === "compositionupdate") {
       key = e.data;
     } else {
       key = e.key;
     }
-    console.log(e);
-    // if (editorRef.current.textContent.endsWith(e.key)) {
-    // update editorChanger for event-wise
+
+    if (e.key) {
+      console.log(e.key);
+      switch (e.key) {
+        case "ArrowUp":
+          e.preventDefault();
+          console.log(11);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          console.log(22);
+          break;
+        case "Enter":
+          e.preventDefault();
+          break;
+        default:
+          break;
+      }
+    }
+
     setEditorState((prev) => {
       return {
         ...prev,
-        editorChanger: ++prev.editorChanger,
         key,
+        editorChanger: ++prev.editorChanger,
       };
     });
     // }

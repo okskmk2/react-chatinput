@@ -38,7 +38,6 @@ const Mention = (props) => {
   useEffect(() => {
     if (editorState.dom) {
       const text = editorState.dom.textContent; // textContent => IE11 ok
-      console.log("key", editorState.key);
       if (text.endsWith("@")) {
         setSuggestion(() => channelMemberList);
       } else if (text === "") {
@@ -47,9 +46,58 @@ const Mention = (props) => {
     }
   }, [editorState.editorChanger]);
 
+  useEffect(() => {
+    const suggestionSelected = document.querySelector(".suggestion-selected");
+    if (suggestionSelected) {
+      switch (editorState.key) {
+        case "ArrowUp":
+          if (suggestionSelected.previousElementSibling) {
+            suggestionSelected.previousElementSibling.classList.add(
+              "suggestion-selected"
+            );
+            suggestionSelected.classList.remove("suggestion-selected");
+          }
+          break;
+        case "ArrowDown":
+          if (suggestionSelected.nextElementSibling) {
+            suggestionSelected.nextElementSibling.classList.add(
+              "suggestion-selected"
+            );
+            suggestionSelected.classList.remove("suggestion-selected");
+          }
+          break;
+        case "Enter":
+          editorState.dom.appendChild(
+            makeElementByConfig({
+              type: "span",
+              innerHTML: suggestionSelected.innerHTML,
+              attrs: [{ name: "class", value: "mention-label" }],
+            })
+          );
+          editorState.dom.appendChild(
+            makeElementByConfig({
+              type: "span",
+              innerHTML: "\u00A0",
+            })
+          );
+          setSuggestion(() => []);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [editorState.editorChanger]);
+
+  useEffect(() => {
+    if (suggestion.length > 0) {
+      const mentionUl = document.querySelector(".mention-ul");
+      mentionUl.firstElementChild.classList.add("suggestion-selected");
+    }
+  }, [suggestion]);
+
   return (
     <div>
-      <ul>
+      <ul className="mention-ul">
         {suggestion.map((member, i) => (
           <li key={i} onClick={onClick}>
             {member.name}
