@@ -20,10 +20,16 @@ const Mention = (props) => {
   const [suggestion, setSuggestion] = useState([]);
 
   const onClick = (e) => {
+    const cs = editorState.dom.children;
+    console.log(cs[editorState.dom.children.length-1]);
+    for (let i = 0; i < cs.length; i++) {
+      const element = cs[i];
+      console.log(element);
+    }
     editorState.dom.appendChild(
       makeElementByConfig({
         type: "span",
-        innerHTML: e.target.innerHTML,
+        innerHTML: "@" + e.target.innerHTML,
         attrs: [{ name: "class", value: "mention-label" }],
       })
     );
@@ -36,17 +42,32 @@ const Mention = (props) => {
   };
 
   useEffect(() => {
+    // console.log(editorState.dom);
     if (editorState.dom) {
       const text = editorState.dom.textContent; // textContent => IE11 ok
       if (text.endsWith("@")) {
         setSuggestion(() => channelMemberList);
       } else if (text === "") {
         setSuggestion(() => []); // IE11 ok
+      } else {
+        let rtn2 = [...text.matchAll(/(?<=@)\S+(?=$)/ig)];
+        console.log(rtn2);
+        let rtn = text.match(/(?<=@)\S+(?=$)/i);
+        if (rtn) {
+          let searchValue = text.match(/(?<=@)\S+(?=$)/i).pop();
+          console.log(searchValue);
+          setSuggestion(() =>
+            channelMemberList.filter(
+              (v) => Hangul.search(v.name, searchValue) > -1
+            )
+          );
+        }
       }
     }
   }, [editorState.editorChanger]);
 
   useEffect(() => {
+    console.log(editorState.key);
     const suggestionSelected = document.querySelector(".suggestion-selected");
     if (suggestionSelected) {
       switch (editorState.key) {
