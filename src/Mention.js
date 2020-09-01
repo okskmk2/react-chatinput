@@ -41,30 +41,30 @@ const Mention = (props) => {
     );
   };
 
-  useEffect(() => {
-    // console.log(editorState.dom);
-    if (editorState.dom) {
-      const text = editorState.dom.textContent; // textContent => IE11 ok
-      if (text.endsWith("@")) {
-        setSuggestion(() => channelMemberList);
-      } else if (text === "") {
-        setSuggestion(() => []); // IE11 ok
-      } else {
-        let rtn2 = [...text.matchAll(/(?<=@)\S+(?=$)/ig)];
-        console.log(rtn2);
-        let rtn = text.match(/(?<=@)\S+(?=$)/i);
-        if (rtn) {
-          let searchValue = text.match(/(?<=@)\S+(?=$)/i).pop();
-          console.log(searchValue);
-          setSuggestion(() =>
-            channelMemberList.filter(
-              (v) => Hangul.search(v.name, searchValue) > -1
-            )
-          );
-        }
-      }
-    }
-  }, [editorState.editorChanger]);
+  // useEffect(() => {
+  //   // console.log(editorState.dom);
+  //   if (editorState.dom) {
+  //     const text = editorState.dom.textContent; // textContent => IE11 ok
+  //     if (text.endsWith("@")) {
+  //       setSuggestion(() => channelMemberList);
+  //     } else if (text === "") {
+  //       setSuggestion(() => []); // IE11 ok
+  //     } else {
+  //       let rtn2 = [...text.matchAll(/(?<=@)\S+(?=$)/ig)]; // firefox issue
+  //       console.log(rtn2);
+  //       let rtn = text.match(/(?<=@)\S+(?=$)/i);
+  //       if (rtn) {
+  //         let searchValue = text.match(/(?<=@)\S+(?=$)/i).pop(); // firefox issue
+  //         console.log(searchValue);
+  //         setSuggestion(() =>
+  //           channelMemberList.filter(
+  //             (v) => Hangul.search(v.name, searchValue) > -1
+  //           )
+  //         );
+  //       }
+  //     }
+  //   }
+  // }, [editorState.editorChanger]);
 
   useEffect(() => {
     console.log(editorState.key);

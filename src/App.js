@@ -26,12 +26,28 @@ function App() {
   // mention
   const [isOpenMention, setIsOpenMention] = useState(false);
 
+  const [slashInputLevel, setSlashInputLevel] = useState(0);
+
   const levelDifiner = (text) => {
     if (text.slice(-1).charCodeAt() === 59) {
-      text = text.replace('&nbsp;', ' ');
+      text = text.replace("&nbsp;", " ");
     }
     const token = text.split(" ");
     console.log({ token });
+    switch (token.length) {
+      case 1:
+        setSlashInputLevel(1);
+        break;
+      case 2:
+        setSlashInputLevel(2);
+        break;
+      case 3:
+        setSlashInputLevel(3);
+        break;
+      default:
+        setSlashInputLevel(0);
+        break;
+    }
   };
 
   const onCompositionUpdate = (e) => {};
@@ -52,6 +68,20 @@ function App() {
         setIsOpenMention={setIsOpenMention}
         isOpenMention={isOpenMention}
       /> */}
+      {slashInputLevel === 1 && (
+        <div>
+          {commandList.map((v) => (
+            <div>{v.name}</div>
+          ))}
+        </div>
+      )}
+      {slashInputLevel === 2 && (
+        <div>
+          {commandList[0].subCommands.map((v) => (
+            <div>{v.command}</div>
+          ))}
+        </div>
+      )}
       <div
         onCompositionUpdate={onCompositionUpdate}
         onKeyUp={onKeyUp}
