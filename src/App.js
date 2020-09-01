@@ -5,6 +5,15 @@ import * as Hangul from "hangul-js";
 
 let editorChanger = 0;
 
+const commandList = [
+  { name: "Mail", subCommands: [{ command: "search" }, { command: "help" }] },
+  { name: "Moto", subCommands: [{ command: "search" }, { command: "help" }] },
+  {
+    name: "Approval",
+    subCommands: [{ command: "search" }, { command: "help" }],
+  },
+];
+
 function App() {
   // editor
   const editorRef = useRef();
@@ -17,32 +26,32 @@ function App() {
   // mention
   const [isOpenMention, setIsOpenMention] = useState(false);
 
+  const levelDifiner = (text) => {
+    if (text.slice(-1).charCodeAt() === 59) {
+      text = text.replace('&nbsp;', ' ');
+    }
+    const token = text.split(" ");
+    console.log({ token });
+  };
+
   const onCompositionUpdate = (e) => {};
+
   // 일반 텍스트
   const onKeyUp = (e) => {
-    setEditorState(() => ({
-      dom: editorRef.current,
-      editorChanger: !editorState.editorChanger,
-    }));
+    const inputText = editorRef.current.innerHTML;
+    levelDifiner(inputText);
   };
   // 방향키
-  const onKeyDown = (e) => {
-    e.persist();
-    setEditorState(() => ({
-      ...editorState,
-      editorChanger: !editorState.editorChanger,
-      key: e.key,
-    }));
-  };
+  const onKeyDown = (e) => {};
 
   return (
     <div className="App">
-      <Mention
+      {/* <Mention
         editorState={editorState}
         setEditorState={setEditorState}
         setIsOpenMention={setIsOpenMention}
         isOpenMention={isOpenMention}
-      />
+      /> */}
       <div
         onCompositionUpdate={onCompositionUpdate}
         onKeyUp={onKeyUp}
